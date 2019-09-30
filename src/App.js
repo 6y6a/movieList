@@ -11,6 +11,7 @@ import PageNotFound from "./pages/PageNotFound";
 import PageMovie from "./pages/PageMovie";
 import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
+import MovieForm from "./components/MovieForm";
 
 function App() {
     return (
@@ -21,7 +22,8 @@ function App() {
                 <Switch>
                     <Route path='/login' component={LoginForm}/>
                     <Route path='/register' component={RegisterForm}/>
-                    <Route path='/movies/:id' component={PageMovie}/>
+                    <Route path='/movies/new' component={MovieForm}/>
+                    <Route path='/movies/:id' component={MovieForm}/>
                     <Route path='/movies' component={PageMovies}/>
                     <Route path='/customers' component={PageCustomers}/>
                     <Route path='/rentals' component={PageRentals}/>
