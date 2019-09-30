@@ -6,6 +6,7 @@ import Filter from './Filter'
 import paginate from "../utils/paginate";
 import MoviesTable from "./MoviesTable";
 import _ from 'lodash'
+import { NavLink } from "react-router-dom";
 
 class Movies extends Component {
     state = {
@@ -83,6 +84,8 @@ class Movies extends Component {
 
                     <div className="col">
                         <p>Showing {totalCount} in the database</p>
+
+                        <NavLink to='/movies/new' className="btn btn-primary mb-4">Create new</NavLink>
 
                         <MoviesTable
                             movies={data}
