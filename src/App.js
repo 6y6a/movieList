@@ -10,6 +10,7 @@ import PageRentals from "./pages/PageRentals";
 import PageNotFound from "./pages/PageNotFound";
 import PageMovie from "./pages/PageMovie";
 import LoginForm from "./components/LoginForm";
+import RegisterForm from "./components/RegisterForm";
 
 function App() {
     return (
@@ -19,6 +20,7 @@ function App() {
             <div className="container mt-4">
                 <Switch>
                     <Route path='/login' component={LoginForm}/>
+                    <Route path='/register' component={RegisterForm}/>
                     <Route path='/movies/:id' component={PageMovie}/>
                     <Route path='/movies' component={PageMovies}/>
                     <Route path='/customers' component={PageCustomers}/>
