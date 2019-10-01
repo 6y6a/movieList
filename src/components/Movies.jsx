@@ -7,12 +7,14 @@ import paginate from "../utils/paginate";
 import MoviesTable from "./MoviesTable";
 import _ from 'lodash'
 import { NavLink } from "react-router-dom";
+import Input from "./Input";
 
 class Movies extends Component {
     state = {
         movies: [],
         genres: [],
         selectedGenre: null,
+        searchRequest: '',
         pageSize: 4,
         currentPage: 1,
         sortColumn: { path: 'title', order: 'asc'}
@@ -45,19 +47,27 @@ class Movies extends Component {
     }
 
     handleFilterChange = (genre) => {
-        this.setState({ selectedGenre: genre, currentPage: 1 })
+        this.setState({ selectedGenre: genre, searchRequest: '', currentPage: 1 })
     }
 
     handleSort = sortColumn => {
         this.setState({ sortColumn})
     }
 
-    getPagedData = () => {
-        const { pageSize, currentPage, selectedGenre, sortColumn, movies: allMovies } = this.state
+    handleSearch = ({currentTarget: input}) => {
+        this.setState({selectedGenre: null, searchRequest: input.value, currentPage: 1})
+    }
 
-        const filteredMovies = selectedGenre && selectedGenre._id
-            ? allMovies.filter(m => m.genre._id === selectedGenre._id)
-            : allMovies
+    getPagedData = () => {
+        const { pageSize, currentPage, selectedGenre, sortColumn, searchRequest, movies: allMovies } = this.state
+
+        let filteredMovies = allMovies
+
+        if (searchRequest) {
+            filteredMovies = allMovies.filter(m => m.title.toLowerCase().includes(searchRequest))
+        } else if ( selectedGenre && selectedGenre._id) {
+            filteredMovies = allMovies.filter(m => m.genre._id === selectedGenre._id)
+        }
 
         const sorted = _.orderBy(filteredMovies, [sortColumn.path], [sortColumn.order])
 
@@ -83,9 +93,17 @@ class Movies extends Component {
                     </div>
 
                     <div className="col">
-                        <p>Showing {totalCount} in the database</p>
 
                         <NavLink to='/movies/new' className="btn btn-primary mb-4">Create new</NavLink>
+
+                        <p style={{margin: 0}}>Showing {totalCount} in the database</p>
+
+                        <Input
+                            name='search'
+                            value={this.state.searchRequest}
+                            placeholder='Search...'
+                            onChange={this.handleSearch}
+                        />
 
                         <MoviesTable
                             movies={data}

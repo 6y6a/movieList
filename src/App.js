@@ -8,7 +8,6 @@ import PageMovies from "./pages/PageMovies";
 import PageCustomers from "./pages/PageCustomers";
 import PageRentals from "./pages/PageRentals";
 import PageNotFound from "./pages/PageNotFound";
-import PageMovie from "./pages/PageMovie";
 import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
 import MovieForm from "./components/MovieForm";
