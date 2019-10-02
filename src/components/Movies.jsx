@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import { getMovies } from "../services/fakeMovieService";
-import { getGenres } from "../services/fakeGenreService";
+import { getMovies, deleteMovie } from "../services/movieService";
+import { getGenres } from "../services/genreService";
 import Pagination from "./Pagination";
 import Filter from './Filter'
 import paginate from "../utils/paginate";
@@ -20,18 +20,28 @@ class Movies extends Component {
         sortColumn: { path: 'title', order: 'asc'}
     }
 
-    componentDidMount() {
-        const genres = [{ _id: '', name: 'All genres'}, ...getGenres()]
+    async componentDidMount() {
+        const {data: genresInDb} = await getGenres();
+        const genres = [{ _id: '', name: 'All genres'}, ...genresInDb]
+        const {data: moviesInDb} = await getMovies();
 
         this.setState({
-            movies: getMovies(),
+            movies: moviesInDb,
             genres: genres
         })
     }
 
-    handleDelete = (movie) => {
-        const movies = this.state.movies.filter(item => movie._id !== item._id)
+    handleDelete = async movie => {
+        const originalMovies = this.state.movies
+
+        const movies = originalMovies.filter(item => item._id !== movie._id)
         this.setState({movies: movies})
+
+        try {
+            await deleteMovie(movie._id);
+        } catch (error) {
+            this.setState({movies: originalMovies})
+        }
     }
 
     handleLike = (movie) => {
